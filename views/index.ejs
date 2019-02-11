@@ -1,0 +1,25 @@
+<% include ./common/header %>
+<body>
+    <h3 class="text-center">Welcome to XRP Ripple</h3>
+    <div class="container">
+        <div class="jumbotron">        
+            <div class="row">
+                <div class="col-sm-12">
+                    Your Wallet Adress: <span class="text-success"><%= data.xrp_address %> </span> 
+                </div>    
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                        Balance: <span class="text-success"> <%= data.balance %>  XRP</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4">
+                        <a href="/payment" class="btn btn-primary">Make Payment</a>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</body>
+</html>
