@@ -18,6 +18,7 @@
     "ejs": "^2.6.1",
     "express": "^4.16.4",
     "ripple-lib": "*",
-    "serve-favicon": "^2.5.0"
+    "serve-favicon": "^2.5.0",
+    "wallet-address-validator": "^0.2.4"
   }
 }

@@ -25,5 +25,8 @@ exports.walletInfoXRP = function walletInfoXRP(resolve,address){
         return api.disconnect();
       }).then(() => {
         console.log('done and disconnected.');
-      }).catch(console.error);
+      }).catch( err => {
+          resolve("null");
+        }
+      );
 }

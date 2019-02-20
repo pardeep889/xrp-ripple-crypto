@@ -1,5 +1,4 @@
 'use strict';
-const RippleAPI = require('ripple-lib').RippleAPI;
 const doenv = require('dotenv').config();
 const express = require('express');
 const app = express();
@@ -7,7 +6,7 @@ const bodyParser = require('body-parser');
 var favicon = require('serve-favicon')
 var path = require('path');
 var Wallet = require('./xrp/walletInfo');
-
+var WAValidator = require('wallet-address-validator');
 
 //middlewares
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -26,19 +25,41 @@ app.get('/walletInfo', (req,res) => {
 })
 
 app.post('/walletInfo', (req,res) => {
-  // console.log(req.body.address);
   let address = req.body.address.toString();
-  let walletInfoResolver = new Promise(function(resolve,reject){
-    Wallet.walletInfoXRP(resolve,address);
-  });
-  walletInfoResolver.then(function(data){
-      console.log(data);
-      res.render(__dirname + '/views/index', {data});
-  }); 
+  var valid = WAValidator.validate(address, 'ripple', 'testnet');
+    if(valid){
+      let walletInfoResolver = new Promise(function(resolve,reject){
+        Wallet.walletInfoXRP(resolve,address);
+      });
+      walletInfoResolver.then(function(data){     
+          if(data == 'null'){
+            res.send("Error [hint: Please check your address]");
+          }else{
+             res.render(__dirname + '/views/index', {data});
+          }         
+      }); 
+    }          
+    else{
+          res.send("Error [hint: Please check your address]");
+    }
 });
 
 app.get('/payment', (req,res) => {
     res.render(__dirname + '/views/payment');
+});
+
+app.post('/payment', (req,res) => {
+  let source = req.body.source;
+  let dest = req.body.dest;
+  let amount= req.body.amount;
+  let key = req.body.key;
+  var validSource = WAValidator.validate(source, 'ripple', 'testnet');
+  var validDest = WAValidator.validate(dest,'ripple','testnet');
+  if(validSource && validDest && typeof(amount) == 'number'){
+    console.log('fine');
+  }else{
+    res.send("Error [hint: Please check your address]");   
+  }
 });
 
 const port = process.env.PORT || 3000;

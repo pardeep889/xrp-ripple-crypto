@@ -4,27 +4,35 @@
     <div class="container">
         <div class="jumbotron">
                     <div class="text-center">
-                        <form action="">
+                        <form action="/payment" method="POST">
                             <div class="row">
                                 <div class="form-group col-sm-12">
-                                    <input type="text" name="address" class="form-control" placeholder="Please Enter Destination Address...">
+                                    <input type="text" name="dest" class="form-control" placeholder="Please Enter Destination Address..." required>
                                 </div>
                             </div>  
                             <div class="row">
                                 <div class="form-group col-sm-3">
-                                        <input type="text" name="amount" class="form-control" placeholder="Enter Amount to pay...">
+                                        <input type="text" name="amount" class="form-control" placeholder="Enter Amount to pay..." required>
                                 </div>
                                 <div class="col-sm-1 amount">
                                         in XRP
                                 </div>                                
-                            </div>                                    
+                            </div>  
+                            
+                                <div class="form-group">                         
+                                    <input type="text" class="form-control" name="source" id="source" placeholder="Your Address" required>
+                                </div>
+                                <div class="form-group">                                    
+                                    <input type="text" class="form-control" name="key" placeholder="Enter Your Secret Key" id="Your Private Key" required>
+                                </div>
+                                <div class="row">
+                                        <div class="col-sm-12">
+                                                <input type="submit" class="btn btn-success" value="Process & Pay"/>    
+                                        </div>                                    
+                                </div>                        
                         </form>      
                     </div>
-                    <div class="row">
-                            <div class="col-sm-12">
-                                    <button class="btn btn-success">Confirm & Pay</button>       
-                            </div>                                    
-                    </div> 
+                
         </div>
     </div>
 </body>
