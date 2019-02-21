@@ -5,8 +5,10 @@ const app = express();
 const bodyParser = require('body-parser');
 var favicon = require('serve-favicon')
 var path = require('path');
-var Wallet = require('./xrp/walletInfo');
 var WAValidator = require('wallet-address-validator');
+
+var Wallet = require('./xrp/walletInfo');
+var Payment = require('./xrp/payment');
 
 //middlewares
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -51,14 +53,21 @@ app.get('/payment', (req,res) => {
 app.post('/payment', (req,res) => {
   let source = req.body.source;
   let dest = req.body.dest;
-  let amount= req.body.amount;
+  let amount= parseInt(req.body.amount);
   let key = req.body.key;
   var validSource = WAValidator.validate(source, 'ripple', 'testnet');
-  var validDest = WAValidator.validate(dest,'ripple','testnet');
-  if(validSource && validDest && typeof(amount) == 'number'){
-    console.log('fine');
+  var validDest = WAValidator.validate(dest,'ripple','testnet'); 
+
+  if(validSource && validDest && typeof(amount) == 'number' && !isNaN(amount)) {
+    let processPaymentResolver = new Promise(function(resolve,reject){
+      Payment.processPayment(dest,source,key,amount,resolve);
+    });
+    processPaymentResolver.then((data)=> {
+      res.send(data);
+    });
+
   }else{
-    res.send("Error [hint: Please check your address]");   
+    res.send("Error [hint: Please check your address or Private Key]");   
   }
 });
 
